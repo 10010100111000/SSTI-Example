@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{ lab.title }}</title>
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;600&family=Source+Sans+Pro:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&family=Ubuntu:wght@400;500;600&family=Source+Sans+Pro:wght@400;500&display=swap"
     />
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
   </head>
@@ -22,7 +22,7 @@
         <p class="hero-label">Fake Flag</p>
         <p class="hero-flag">{{ lab.fake_flag }}</p>
         <p class="muted">
-          Can you reach sensitive data by abusing Server-Side Template Injection?
+          你能否通过滥用 Server-Side Template Injection 访问敏感数据？
         </p>
       </div>
     </header>
@@ -31,9 +31,9 @@
       <section class="card demo-card">
         <h2>SSTI Playground</h2>
         <p>
-          This lab intentionally renders raw user input inside a Jinja2 template using
-          <code>render_template_string</code>. Enter snippets below to observe how
-          template expressions execute on the server.
+          本 Lab 会故意使用 <code>render_template_string</code> 将原始用户输入渲染到
+          Jinja2 template 中。请在下方输入 snippets，观察 template expressions 如何在
+          server 端执行。
         </p>
         <form method="POST" class="payload-form">
           <label for="payload" class="label">Payload</label>
@@ -62,7 +62,7 @@
             {% if rendered_output %}
             {{ rendered_output | safe }}
             {% else %}
-            <p class="muted">No payload rendered yet. Start with {{ '{{ 7 * 7 }}' }}.</p>
+            <p class="muted">尚未渲染 payload。可以先从 {{ '{{ 7 * 7 }}' }} 开始。</p>
             {% endif %}
           </div>
         </div>
@@ -76,11 +76,10 @@
           {% endfor %}
         </ul>
         <div class="status-badge info">
-          <span>Why this is vulnerable</span>
+          <span>为什么这里存在 vulnerability</span>
           <p>
-            User-controlled strings are evaluated as templates. Attackers can reach
-            <code>config</code>, call Python builtins, or leverage objects to
-            access host resources.
+            用户可控字符串会被当作 templates 进行求值。Attackers 可能访问
+            <code>config</code>、调用 Python builtins，或借助 objects 读取 host resources。
           </p>
         </div>
       </aside>
@@ -88,40 +87,38 @@
 
     <section class="card solution-card subtle-card">
       <div class="solution-header">
-        <p class="label">Need a nudge?</p>
+        <p class="label">需要一点提示？</p>
         <h2>Solution</h2>
       </div>
       <details>
-        <summary>Toggle solution</summary>
+        <summary>展开 / 收起 solution</summary>
         <ol class="solution-steps">
           <li>
-            <span class="step-title">Prove code execution.</span>
-            Submit <code>{{ '{{ 7 * 7 }}' }}</code> to confirm expressions are evaluated.
+            <span class="step-title">验证 code execution。</span>
+            提交 <code>{{ '{{ 7 * 7 }}' }}</code>，确认 expressions 会被求值。
           </li>
           <li>
-            <span class="step-title">Enumerate context.</span>
-            Use <code>{{ '{{ config.items() }}' }}</code> or
-            <code>{{ '{{ request.__dict__ }}' }}</code> to discover objects exposed to the
-            template.
+            <span class="step-title">枚举 context。</span>
+            使用 <code>{{ '{{ config.items() }}' }}</code> 或
+            <code>{{ '{{ request.__dict__ }}' }}</code> 发现 template 中暴露的 objects。
           </li>
           <li>
-            <span class="step-title">Read the flag.</span>
-            Jinja exposes Flask globals, so run
+            <span class="step-title">读取 flag。</span>
+            Jinja 会暴露 Flask globals，因此可以运行
             <code
               >{{ "{{ request.application.__globals__.__builtins__.open('flag.txt').read() }}" }}</code
             >
-            to cat the file on the server.
+            在 server 上 cat 文件。
           </li>
         </ol>
         <div class="status-badge info compact">
-          <span>Why it works</span>
+          <span>为什么它有效</span>
           <p>
-            <code>request.application</code> leads to Flask internals, letting you reach the raw
-            <code>__builtins__</code> namespace and call <code>open()</code>.
+            <code>request.application</code> 会通向 Flask internals，让你可以触达原始
+            <code>__builtins__</code> namespace 并调用 <code>open()</code>。
           </p>
         </div>
       </details>
     </section>
   </body>
 </html>
-
