@@ -5,12 +5,12 @@ app = Flask(__name__)
 
 
 LAB_METADATA = {
-    "title": "Injection Showcase",
-    "tagline": "Understand how insecure template rendering can be dangerous.",
+    "title": "SSTI Injection Showcase",
+    "tagline": "了解不安全的 template rendering 如何带来真实风险。",
     "tips": [
-        "Jinja2 templates can access Python objects when not sandboxed.",
-        "Look for builtins like config, request, cycler, joiner, lipsum.",
-        "Try payloads such as {{7*7}} or {{config.items()}} to explore.",
+        "Jinja2 templates 在未 sandboxed 时可能访问 Python objects。",
+        "关注 config、request、cycler、joiner、lipsum 等 builtins 或上下文对象。",
+        "可以尝试 {{7*7}} 或 {{config.items()}} 等 payloads 进行探索。",
     ],
     "fake_flag": "THM{this_is_not_the_real_flag}",
 }
