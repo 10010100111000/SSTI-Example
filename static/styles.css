@@ -1,0 +1,342 @@
+:root {
+  --thm-50: #ececec;
+  --thm: #151c2b;
+  --thm-700: #212c42;
+  --thm-800: #2d3d5f;
+  --thm-900: #1c2538;
+  --green: #a3ea2a;
+  --green-100: #3bc81e;
+  --gray: #525a6a;
+  --gray-100: #3e475a;
+  --blue-100: #1153e4;
+  font-family: "Source Sans Pro", "Ubuntu", sans-serif;
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--thm);
+  color: var(--thm-50);
+  font-size: 16px;
+  padding: 2rem clamp(1rem, 5vw, 3rem);
+  position: relative;
+  font-family: inherit;
+}
+
+.background-glow {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(
+    circle at 20% 30%,
+    rgba(163, 234, 42, 0.12),
+    transparent 45%
+  );
+  z-index: -1;
+  pointer-events: none;
+}
+
+.page-hero {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: #94a3b8;
+  font-size: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+h1 {
+  font-family: "Ubuntu", sans-serif;
+  font-size: clamp(1.8rem, 4vw, 2.4rem);
+  color: var(--green);
+  margin: 0.25rem 0;
+}
+
+.tagline {
+  color: #cbd5e1;
+  max-width: 40ch;
+}
+
+.hero-card {
+  background: var(--thm-900);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  width: min(320px, 100%);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.hero-label {
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  color: #94a3b8;
+  letter-spacing: 0.1em;
+}
+
+.hero-flag {
+  font-family: "Ubuntu", sans-serif;
+  font-size: 1.25rem;
+  color: var(--green);
+  margin: 0.3rem 0 0.6rem;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.card {
+  background: var(--thm-700);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+}
+
+.solution-card {
+  margin-top: 2rem;
+  background: rgba(21, 28, 43, 0.65);
+  border: 1px dashed rgba(255, 255, 255, 0.12);
+}
+
+.solution-card details {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.85rem;
+  background: rgba(26, 36, 55, 0.6);
+  padding: 1rem 1.25rem;
+}
+
+.solution-card summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--green);
+  list-style: none;
+}
+
+.solution-card summary::marker,
+.solution-card summary::-webkit-details-marker {
+  display: none;
+}
+
+.solution-card summary::after {
+  content: "▼";
+  float: right;
+  color: #94a3b8;
+  transition: transform 0.2s ease;
+}
+
+.solution-card details[open] summary::after {
+  transform: rotate(-180deg);
+}
+
+.solution-steps {
+  margin: 1rem 0 0;
+  padding-left: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  counter-reset: steps;
+}
+
+.solution-steps li {
+  line-height: 1.5;
+  color: var(--thm-50);
+}
+
+.solution-steps .step-title {
+  display: block;
+  font-weight: 600;
+  color: var(--green);
+}
+
+.solution-header h2 {
+  margin: 0.15rem 0 0.75rem;
+}
+
+.subtle-card {
+  opacity: 0.75;
+  transition: opacity 0.2s ease;
+}
+
+.subtle-card:hover,
+.subtle-card:focus-within {
+  opacity: 1;
+}
+
+.status-badge.compact {
+  margin-bottom: 0;
+}
+
+.demo-card h2,
+.tips-card h2 {
+  font-family: "Ubuntu", sans-serif;
+  color: var(--green);
+  margin-top: 0;
+}
+
+.payload-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.payload-form textarea {
+  background: var(--thm);
+  border: 1px solid var(--gray);
+  border-radius: 0.75rem;
+  padding: 0.75rem;
+  color: var(--thm-50);
+  font-size: 1rem;
+  resize: vertical;
+  min-height: 140px;
+  transition: border 0.2s ease;
+}
+
+.payload-form textarea:focus {
+  outline: none;
+  border-color: var(--blue-100);
+  box-shadow: 0 0 0 2px rgba(17, 83, 228, 0.4);
+}
+
+.payload-form button {
+  align-self: flex-start;
+  background: var(--green);
+  color: #0f172a;
+  border: none;
+  border-radius: 0.75rem;
+  padding: 0.65rem 1.5rem;
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.payload-form button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 25px rgba(163, 234, 42, 0.35);
+  background: var(--green-100);
+}
+
+.label {
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #94a3b8;
+}
+
+.status-badge {
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  margin-top: 1rem;
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+}
+
+.status-badge span {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.status-badge.error {
+  background: rgba(235, 0, 55, 0.1);
+  border-color: rgba(235, 0, 55, 0.45);
+  color: #ff5b67;
+}
+
+.status-badge.info {
+  background: rgba(163, 234, 42, 0.08);
+  border-color: rgba(163, 234, 42, 0.35);
+  color: var(--green);
+}
+
+.output-panel {
+  background: var(--thm-900);
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  margin-top: 1.5rem;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.chip {
+  border-radius: 999px;
+  padding: 0.2rem 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  font-size: 0.85rem;
+  color: #ffbb45;
+}
+
+.output-body {
+  min-height: 140px;
+  padding: 1.25rem;
+  color: var(--thm-50);
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+.muted {
+  color: #94a3b8;
+  font-size: 0.9rem;
+}
+
+.tips-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.tips-card li {
+  padding: 0.75rem;
+  background: rgba(33, 44, 66, 0.7);
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+code {
+  background: rgba(255, 255, 255, 0.06);
+  padding: 0.2rem 0.35rem;
+  border-radius: 0.35rem;
+  font-family: "Ubuntu Mono", "Ubuntu", monospace;
+  color: var(--green);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 720px) {
+  body {
+    padding: 1.5rem;
+  }
+
+  .page-hero {
+    flex-direction: column;
+  }
+
+  .payload-form button {
+    width: 100%;
+    text-align: center;
+  }
+}
+
